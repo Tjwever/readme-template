@@ -4,23 +4,14 @@
 <br />
 <div align="center">
   <p>Company or propject logo here</p>
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/Tjwever/readme-template">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Project Name</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    &middot;
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
-    &middot;
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/Tjwever/readme-template">View Demo</a>
   </p>
 </div>
 
@@ -110,33 +101,31 @@ _Below is an example of how you can instruct your audience on installing and set
 
 
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+<!-- Database -->
+## Database useage
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
-
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
+Section about what database technologies that are being used for this project, such as MySql or Postgres.
+Also good for knowledge on how to setup locally if need be
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
-<!-- CONTRIBUTING -->
-## Contributing
+<!-- Migrations -->
+## Seeding and Migrations
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+A section on how Seeding and migrations are handled if they apply to the application.  How to handle new migrations, on each environment.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- Repo Management -->
+## Repository Management
+
+How the CI / CD is handled, which branches are important for deploying and how developers should be handling pushing/pulling/forking of them.
+
+### Pulling Pushing Forking Methods
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -144,52 +133,92 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-### Top contributors:
+### Naming Conventions for branches
 
-<a href="https://github.com/othneildrew/Best-README-Template/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=othneildrew/Best-README-Template" alt="contrib.rocks image" />
-</a>
+Naming conventions dictated by your tech lead
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the Unlicense License. See `LICENSE.txt` for more information.
+Common naming conventions my be:
+<ul>
+  <li>feature/us-story-number/description</li>
+  <li>bug/us-story-number/description</li>
+  <li>feature/developer-name/description</li>
+</ul>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
-<!-- CONTACT -->
-## Contact
+<!-- Structure / Architecture -->
+## Project Structure and Architecture
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+```sh
+src/
+├── main.ts             // Entry point of the application (bootstrapping Nest)
+├── app.module.ts       // Root module, imports all feature modules
+├── common/             // Shared, reusable components across modules
+│   ├── filters/        // Exception filters (e.g., Global exceptions)
+│   │   └── http-exception.filter.ts
+│   ├── guards/         // Authentication/Authorization guards
+│   │   └── auth.guard.ts
+│   ├── interceptors/   // Interceptors (e.g., logging, transformation)
+│   │   └── transform.interceptor.ts
+│   ├── pipes/          // Validation pipes (e.g., DTO validation)
+│   │   └── validation.pipe.ts
+│   └── constants/      // Global constants or enums
+│       └── roles.enum.ts
+├── config/             // Configuration files (e.g., database, environment)
+│   ├── configuration.ts
+│   └── validation-schema.ts // Joi schema for environment variables
+├── database/           // Database-related files (if not using ORM with entities in modules)
+│   ├── migrations/
+│   │   └── 20230101000000-initial-schema.ts
+│   └── seeds/
+│       └── initial-data.ts
+├── modules/            // Feature modules (the core of your application)
+│   ├── auth/
+│   │   ├── auth.module.ts
+│   │   ├── auth.controller.ts
+│   │   ├── auth.service.ts
+│   │   ├── strategies/ // Passport strategies (JWT, Local, etc.)
+│   │   │   ├── jwt.strategy.ts
+│   │   │   └── local.strategy.ts
+│   │   └── dto/        // Data Transfer Objects (for request/response bodies)
+│   │       ├── login.dto.ts
+│   │       └── register.dto.ts
+│   ├── users/
+│   │   ├── users.module.ts
+│   │   ├── users.controller.ts
+│   │   ├── users.service.ts
+│   │   ├── users.repository.ts // If using custom repositories
+│   │   ├── entities/   // Database entities (TypeORM, Mongoose schemas)
+│   │   │   └── user.entity.ts
+│   │   └── dto/
+│   │       ├── create-user.dto.ts
+│   │       └── update-user.dto.ts
+│   └── ... (other feature modules)
+├── shared/             // Less common shared components, perhaps utilities
+│   └── utils/
+│       └── date.utils.ts
+└── tests/              // End-to-end and unit tests
+    ├── unit/
+    │   ├── users/
+    │   │   └── users.service.spec.ts
+    │   └── ...
+    └── e2e/
+        ├── app.e2e-spec.ts
+        └── users.e2e-spec.ts
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
+Brief description of your project.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
